@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steampunk Dev Console - Expert Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=UnifrakturMaguntia&display=swap');
+
+        :root {
+            --brass: #b5a642;
+            --copper: #b87333;
+            --dark-iron: #2b2b2b;
+            --steam-white: #e0e0e0;
+            --gauge-green: #00ff41;
+            --gold: #ffd700;
+        }
+
+        .background-img{
+            width: 100%;
+            height: 100vh;
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)),
+                url('Piltover_Arcane_02.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+
+        }
+
+        body {
+            /* background-color: #1a1a1a; */
+            background-image: radial-gradient(circle, #2c2c2c 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: var(--steam-white);
+            font-family: 'Special+Elite', cursive;
+            overflow: hidden; /* Evitamos scroll global para la experiencia de consola */
+        }
+
+        .steam-font{
+            font-family: 'Courier New', Courier, monospace; 
+            font-weight: bold; 
+            color: #b87333; /* Color cobre */
+            text-transform: uppercase; 
+            text-shadow: 2px 2px 0px #3d2b1f; /* Sombra sólida tipo relieve */
+            letter-spacing: 3px;
+        }
+
+        .main-container {
+            height: 95vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--brass) transparent;
+        }
+
+        .steampunk-border {
+            border: 8px solid var(--brass);
+            border-image: linear-gradient(45deg, var(--brass), var(--copper), var(--brass)) 1;
+            box-shadow: 0 0 20px rgba(181, 166, 66, 0.3), inset 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        .gear { fill: var(--copper); animation: rotate 10s linear infinite; }
+        .gear-slow { animation-duration: 20s; animation-direction: reverse; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .gauge-container {
+            background: #000;
+            border: 4px solid var(--brass);
+            border-radius: 50%;
+            width: 90px; height: 90px;
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .needle {
+            width: 2px; height: 35px;
+            background: red;
+            position: absolute; bottom: 50%;
+            transform-origin: bottom;
+            transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .steam-card {
+            background: rgba(43, 43, 43, 0.9);
+            border-left: 4px solid var(--copper);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .steam-card:hover { transform: translateX(5px); background: rgba(60, 60, 60, 1); }
+
+        .terminal-text {
+            font-family: 'Courier New', monospace;
+            color: var(--gauge-green);
+            text-shadow: 0 0 5px var(--gauge-green);
+        }
+
+        .valve-btn {
+            background: radial-gradient(circle, var(--copper), #8b4513);
+            border: 3px solid var(--brass);
+            border-radius: 50%;
+            width: 50px; height: 50px;
+            box-shadow: 0 4px 0 #5d2e0a;
+            cursor: pointer;
+        }
+
+        .valve-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #5d2e0a; }
+
+        .progress-pipe {
+            height: 12px; background: #000;
+            border: 1px solid var(--brass);
+            position: relative; overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .steam-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--copper), var(--brass));
+            width: 0%;
+            transition: width 1.5s ease-in-out;
+        }
+
+        .profile-frame {
+            width: 120px;
+            height: 120px;
+            border: 6px solid var(--brass);
+            border-radius: 50%;
+            padding: 4px;
+            background: radial-gradient(circle, var(--copper), #8b4513);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(181, 166, 66, 0.4), inset 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        .profile-frame img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--dark-iron);
+        }
+
+        /* Modal Alquimia */
+        #alchemy-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 200;
+            align-items: center; justify-content: center;
+        }
+
+        .modal-content {
+            background: #2a1e15;
+            border: 6px double var(--brass);
+            max-width: 600px; width: 90%;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .answer-btn {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--copper);
+            padding: 8px; text-align: left; font-size: 0.8rem;
+            transition: 0.2s;
+        }
+        .answer-btn:hover { background: var(--copper); color: white; }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .accordion-active .accordion-content {
+            max-height: 200px;
+        }
+
+        .screen-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%);
+            background-size: 100% 4px; pointer-events: none; z-index: 300;
+        }
+    </style>
+</head>
+<body class="p-2 md:p-6 background-img">
+    <div class="screen-overlay"></div>
+
+    <!-- Modal Alquimia (El Minijuego) -->
+    <div id="alchemy-modal">
+        <div class="modal-content steampunk-border">
+            <button class="absolute top-2 right-4 text-brass text-2xl" onclick="toggleAlchemy()">×</button>
+            <h2 class="text-2xl text-gold mb-4 text-center uppercase steam-font" style="color: #e5e7eb; font-family: 'Courier New', Courier, monospace;">
+                Sintetizador de Candidato Ideal
+            </h2>
+            <div id="quiz-container">
+                <div id="question-text" class="mb-4 text-steam-white text-sm h-12"></div>
+                <div id="answers-grid" class="grid grid-cols-1 gap-2"></div>
+            </div>
+            <div id="quiz-result" class="text-center">
+                <!-- Logo de la empresa sobre la puntuación -->
+                <div class="logo-stamp mb-2">
+                    <svg viewBox="0 0 100 100" fill="var(--gold)">
+                        <path d="M50 5 L90 25 L90 75 L50 95 L10 75 L10 25 Z" fill="none" stroke="var(--gold)" stroke-width="2"></path>
+                        <circle cx="50" cy="50" r="20" fill="none" stroke="var(--brass)" stroke-width="4" stroke-dasharray="4 2"></circle>
+                        <text x="50" y="55" text-anchor="middle" font-size="12" fill="var(--gold)" style="font-family:serif">S.W.</text>
+                    </svg>
+                </div>
+                <p class="text-sm text-brass mb-2 uppercase tracking-widest">Aprobado por SteamWorks</p>
+                <div class="text-5xl text-gold mb-4 font-bold" id="final-score">83%</div>
+                <p id="result-desc" class="text-xs italic terminal-text mb-6">IDONEIDAD SUFICIENTE PARA OPERACIONES.</p>
+                <button class="px-6 py-2 border-2 border-brass text-brass uppercase hover:bg-brass hover:text-black transition" onclick="toggleAlchemy()">Cerrar Escotilla</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container max-w-5xl mx-auto steampunk-border p-4 md:p-8 relative bg-[#1a1a1a]/100">
+        
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-6 border-b-4 border-double border-brass pb-6 gap-4">
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                <!-- Foto de Perfil -->
+                <div class="profile-frame">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=b87333" alt="Foto del Operador">
+                </div> 
+                <div class="text-center md:text-left flex-1">
+                    <h1 class="text-3xl md:text-5xl font-bold text-brass uppercase steam-font" style="font-family: 'Courier New', Courier, monospace;">
+                        Desarrollador Full Stack
+                    </h1>
+                    <!-- <p class="text-sm text-copper italic tracking-widest uppercase">Especialista en Automatización a Vapor</p> -->
+                </div>
+            </div>
+            
+            <div class="flex gap-4 bg-black/40 p-3 border border-brass/30">
+                <div class="gauge-container">
+                    <div class="needle" id="comp-needle" style="transform: rotate(-90deg);"></div>
+                    <span class="text-[8px] absolute bottom-2 text-brass">IDONEIDAD</span>
+                </div>
+                <div class="flex flex-col justify-center items-center">
+                    <button class="valve-btn" onclick="toggleAlchemy()"></button>
+                    <span class="text-[8px] mt-1 text-brass uppercase">Laboratorio</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sección: Bitácora del Operador (Sobre mí) -->
+        <section class="mb-8 p-4 bg-black/20 border-l-4 border-brass">
+            <h2 class="text-lg uppercase mb-2 steam-font" 
+            style="font-family: 'Courier New', Courier, monospace; 
+            font-weight: bold; 
+            color: #b87333; /* Color cobre */
+            text-transform: uppercase; 
+            text-shadow: 2px 2px 0px #3d2b1f; /* Sombra sólida tipo relieve */
+            letter-spacing: 3px;
+        ">📜 Bitácora del Operador</h2>
+            <p class="text-xs md:text-sm leading-relaxed text-steam-white/80 italic">
+                Un “friki” curioso e inquieto que percibe el aprendizaje y
+                adaptación como una forma de vida. Mi historial de Youtube
+                esta lleno de videos de tecnología, programación, y análisis
+                de juegos y películas. Me encanta la resolución de problemas aplicando conocimiento y creatividad y esa es la razón por la que me encanta sumergirme en el desarrollo de software. 
+            </p>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Columna Izquierda: Specs Técnicos -->
+            <div class="space-y-6">
+                <!-- Contacto -->
+                <section>
+                    <h2 class="text-lg text-brass border-b border-brass mb-3 uppercase tracking-widest flex items-center" style="font-family: 'Courier New', Courier, monospace;">
+                        <span class="mr-2">📡</span> Canales de contacto
+                    </h2>
+                    <div class="flex flex-col gap-2">
+                        <a href="mailto:arkano@steamworks.io" class="contact-pill">
+                            <span>📧</span> dnuezsan@gmail.com
+                        </a>
+                        <a href="tel:+34900000000" class="contact-pill">
+                            <span>📱</span> +34 656 60 73 64
+                        </a>
+                        <a href="#" class="contact-pill">
+                            <span>📍</span> Talavera la Real, Badajoz
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Tecnologías -->
+                <section>
+                    <h2 class="text-lg text-brass border-b border-brass mb-3 uppercase tracking-widest flex items-center" style="font-family: 'Courier New', Courier, monospace;">
+                        <span class="mr-2">⚙️</span> Tecnologías
+                    </h2>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="text-[10px] p-2 border border-copper/40 bg-black/30">Node.js / Express</div>
+                        <div class="text-[10px] p-2 border border-copper/40 bg-black/30">React</div>
+                        <div class="text-[10px] p-2 border border-copper/40 bg-black/30">Docker</div>
+                        <div class="text-[10px] p-2 border border-copper/40 bg-black/30">PHP / Laravel</div>
+                        <div class="text-[10px] p-2 border border-copper/40 bg-black/30">MySQL</div>
+                        <div class="text-[10px] p-2 border border-copper/40 bg-black/30">JS / HTML / CSS</div>
+                        <div class="text-[10px] p-2 border border-copper/40 bg-black/30">Jquery</div>
+                        <div class="text-[10px] p-2 border border-copper/40 bg-black/30">Tailwind</div>
+                        <div class="text-[10px] p-2 border border-copper/40 bg-black/30">Bootstrap</div>
+                        <div class="text-[10px] p-2 border border-copper/40 bg-black/30">Linux</div>
+                        <div class="text-[10px] p-2 border border-copper/40 bg-black/30">IA </div>
+                        <div class="text-[10px] p-2 border border-copper/40 bg-black/30">Git </div>
+                    </div>
+                </section>
+
+                <!-- Lenguas (Desplegable) -->
+                <section class="border border-brass/30 p-2">
+                    <button class="w-full text-left text-brass uppercase text-sm flex justify-between items-center" onclick="toggleAccordion(this)" style="font-family: 'Courier New', Courier, monospace;">
+                        <span>🗣️ Protocolos de comunicación</span>
+                        <span>+</span>
+                    </button>
+                    <div class="accordion-content space-y-2 mt-2">
+                        <div class="text-[10px]">Español (Nativo - Presión Máxima)</div>
+                        <div class="text-[10px]">Inglés (B2 - Transmisión Fluida)</div>
+                    </div>
+                </section>
+
+                <!-- Educación (Desplegable) -->
+                <section class="border border-brass/30 p-2">
+                    <button class="w-full text-left text-brass uppercase text-sm flex justify-between items-center" onclick="toggleAccordion(this)" style="font-family: 'Courier New', Courier, monospace;">
+                        <span>🎓 Academia Central</span>
+                        <span>+</span>
+                    </button>
+                    <div class="accordion-content space-y-3 mt-2">
+                        <div class="border-l-2 border-copper pl-2">
+                                <p class="text-[10px] font-bold">Grado en Ciencias Ambientales</p>
+                                <p class="text-[8px] italic">Universidad de Extremadura (2013-2018)</p>
+                        </div>
+                        <div class="border-l-2 border-copper pl-2">
+                            <p class="text-[10px] font-bold">Grado Superior en Desarrollo de Aplicaciones Web</p>
+                            <p class="text-[8px] italic">CESUR (2020-2021)</p>
+                        </div>
+                        <div class="border-l-2 border-copper pl-2">
+                            <p class="text-[10px] font-bold">Grado Superior en Desarrollo de Aplicaciones Web</p>
+                            <p class="text-[8px] italic">Colegio Virgen de Guadalupe (2021-2022)</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Soft Skills -->
+                <section>
+                    <h2 class="text-brass border-b border-brass mb-3 uppercase tracking-widest flex items-center text-sm" style="font-family: 'Courier New', Courier, monospace;">
+                        <span class="mr-2">🔧</span> Habilidades de Operador
+                    </h2>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span>Autonomía</span><span>92%</span></div>
+                            <div class="progress-pipe"><div class="steam-fill" style="width: 92%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span>Comunicación Efectiva</span><span>76%</span></div>
+                            <div class="progress-pipe"><div class="steam-fill" style="width: 76%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span>Pensamiento Crítico</span><span>90%</span></div>
+                            <div class="progress-pipe"><div class="steam-fill" style="width: 90%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span>Resolución de Problemas</span><span>95%</span></div>
+                            <div class="progress-pipe"><div class="steam-fill" style="width: 95%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span>Empatía y Paciencia</span><span>85%</span></div>
+                            <div class="progress-pipe"><div class="steam-fill" style="width: 85%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span>Adaptabilidad y Aprendizaje</span><span>86%</span></div>
+                            <div class="progress-pipe"><div class="steam-fill" style="width: 86%"></div></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Columna Derecha: Crónicas y Consola -->
+            <div id="right-column" class="md:col-span-2 flex flex-col space-y-4">
+                <section id="experience-section" class="flex-shrink-0">
+                    <h2 class="text-xl text-brass border-b-2 border-brass mb-4 uppercase tracking-tighter" style="font-family: 'Courier New', Courier, monospace;">📜 Crónicas de Ingeniería</h2>
+                    <div class="space-y-3">
+                        <div class="steam-card p-3" onclick="logExperience('PRACTICAS FTC', 'Las tareas que se me asignaron fueron la detección, rastreo y solución de errores en el back-end del sector ')">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-md text-copper uppercase font-bold" style="font-family: 'Courier New', Courier, monospace;">Prácticas FTC @ Indra Sistemas S.A.</h3>
+                                <span class="text-[9px] bg-copper/20 px-2 py-1 border border-copper/50">Marzo 2022 - Junio 2022</span>
+                            </div>
+                            <!-- <p class="text-[10px] mt-1 italic">Presiona para ver registros de la bitácora...</p> -->
+                        </div>
+
+                        <div class="steam-card p-3" onclick="logExperience('TÉCNICO DE PROGRAMACIÓN', 'Desarrollé interactivos con tecnologías web y motores como Unity y PlayCanvas de forma autónoma, estando a cargo del desarrolo y despliegue. También llevé a cabo el despliegue y mantenimiento de sistemas en remoto')">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-md text-copper uppercase font-bold" style="font-family: 'Courier New', Courier, monospace;">Técnico de Programación @ Tecnología Creativa Para el Ocio S.L.</h3>
+                                <span class="text-[9px] bg-copper/20 px-2 py-1 border border-copper/50">Julio 2022 - Octubre 2022</span>
+                            </div>
+                            <!-- <p class="text-[10px] mt-1 italic">Presiona para ver registros de la bitácora...</p> -->
+                        </div>
+
+                        <div class="steam-card p-3" onclick="logExperience('FULLSTACK STACK DEVELOPER', 'He llevado a cabo el desarrollo de módulos para diversas webs y servicios como el registro de incidencias, un ERP de venta de entradas, o venta online. También he sido responsable del desarrollo y mantenimiento de e-commerce, integración con diferentes servicios back-office y front-office adaptados a las necesidades específicas de cada cliente')">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-md text-copper uppercase font-bold" style="font-family: 'Courier New', Courier, monospace;">Full Stack Developer @ Azulae S.L.</h3>
+                                <span class="text-[9px] bg-copper/20 px-2 py-1 border border-copper/50">Octubre 2023 - Actualidad</span>
+                            </div>
+                            <!-- <p class="text-[10px] mt-1 italic">Presiona para ver registros de la bitácora...</p> -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Consola de Comandos -->
+                <section id="terminal-section" class="bg-black p-4 border-2 border-brass/50 relative flex flex-col">
+                    <div class="absolute top-1 right-2 text-[8px] text-red-600 animate-pulse font-bold">REC_DRIVE_01</div>
+                    <div class="flex justify-between items-center mb-2 border-b border-brass/20 pb-1">
+                        <div class="text-[9px] text-brass uppercase flex-shrink-0" style="font-family: 'Courier New', Courier, monospace;">Terminal de Datos de Ingeniería</div>
+                        <button onclick="clearTerminal()" class="text-[8px] text-copper hover:text-brass border border-copper/50 hover:border-brass px-2 py-1 uppercase transition-colors">
+                            Limpiar
+                        </button>
+                    </div>
+                    <div id="console-log" class="terminal-text text-xs overflow-y-auto space-y-2 flex-1">
+                        [SISTEMA INICIALIZADO]<br>
+                        > Todos los engranajes están engrasados.<br>
+                        > Esperando interacción del operador...
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Footer Decorativo -->
+        <footer class="mt-6 flex justify-center gap-8 opacity-40">
+            <svg class="w-10 h-10 gear" viewBox="0 0 100 100"><path d="M50 20c-16.5 0-30 13.5-30 30s13.5 30 30 30 30-13.5 30-30-13.5-30-30-30zm0 10c11 0 20 9 20 20s-9 20-20 20-20-9-20-20 9-20 20-20z M50 0l5 15h-10z M100 50l-15 5v-10z M50 100l-5-15h10z M0 50l15-5v10z" /></svg>
+            <div class="text-[8px] text-center self-center uppercase tracking-widest text-brass">Propiedad de Arkano Vapores - 1899-2026</div>
+            <svg class="w-10 h-10 gear gear-slow" viewBox="0 0 100 100"><path d="M50 20c-16.5 0-30 13.5-30 30s13.5 30 30 30 30-13.5 30-30-13.5-30-30-30zm0 10c11 0 20 9 20 20s-9 20-20 20-20-9-20-20 9-20 20-20z M50 0l5 15h-10z M100 50l-15 5v-10z M50 100l-5-15h10z M0 50l15-5v10z" /></svg>
+        </footer>
+    </div>
+
+    <script>
+        const consoleLog = document.getElementById('console-log');
+        const compNeedle = document.getElementById('comp-needle');
+        
+        // --- Lógica para fijar altura de terminal ---
+        function setTerminalHeight() {
+            const rightColumn = document.getElementById('right-column');
+            const experienceSection = document.getElementById('experience-section');
+            const terminalSection = document.getElementById('terminal-section');
+            
+            if (!rightColumn || !experienceSection || !terminalSection) return;
+            
+            // Obtener altura disponible del contenedor padre
+            const columnHeight = rightColumn.clientHeight;
+            // Obtener altura de la sección de experiencia + gap
+            const experienceHeight = experienceSection.offsetHeight + 16; // 16px del space-y-4
+            // Calcular altura disponible para terminal
+            const availableHeight = columnHeight - experienceHeight;
+            
+            // Fijar la altura de la terminal (mínimo 200px)
+            const terminalHeight = Math.max(availableHeight, 200);
+            terminalSection.style.height = terminalHeight + 'px';
+            
+            }
+        
+        // --- Lógica del Acordeón ---
+        function toggleAccordion(btn) {
+            const parent = btn.parentElement;
+            parent.classList.toggle('accordion-active');
+            btn.querySelector('span:last-child').innerText = parent.classList.contains('accordion-active') ? '-' : '+';
+        }
+
+        // --- Lógica de la Consola ---
+        function logMessage(msg, isAccessing = false) {
+            const entry = document.createElement('div');
+            entry.className = 'py-1';
+            if (isAccessing) {
+                entry.innerHTML = `<span style="color: #b5a642;">> ${msg}</span>`; // Color amarillo bronce
+            } else {
+                entry.innerHTML = `> ${msg}`;
+            }
+            consoleLog.prepend(entry);
+        }
+
+        function logExperience(id, details) {
+            logMessage(`ACCEDIENDO A ARCHIVOS DE [${id}]...`, true);
+            setTimeout(() => {
+                logMessage(`REGISTRO: ${details}`);
+            }, 300);
+        }
+
+        function clearTerminal() {
+            // consoleLog.innerHTML = `
+            //     [SISTEMA INICIALIZADO]<br>
+            //     > Todos los engranajes están engrasados.<br>
+            //     > Esperando interacción del operador...
+            // `;
+            consoleLog.innerHTML = `
+                [SISTEMA INICIALIZADO]<br>
+            `;
+        }
+
+        // --- Lógica del Minijuego (Alchemy Quizz) ---
+        const questions = [
+            // { q: "¿Qué combustible prefiere para su backend?", a: ["Vapor de Node.js", "Engranajes de PHP", "Carbón de Java", "Éter de Python"], p: [10, 12, 8, 10] },
+            // { q: "¿Cómo debe ser la interfaz de usuario?", a: ["Intuitiva como un reloj", "Compleja y llena de palancas", "Minimalista", "Reactiva al tacto"], p: [12, 10, 12, 8] },
+            // { q: "¿Nivel de presión soportado?", a: ["Baja", "Media", "Alta (Modo Caldera)", "Extrema (Nuclear)"], p: [5, 8, 10, 12] },
+            // { q: "¿Metodología de trabajo?", a: ["Agile (Viento en popa)", "Cascada (Catarata)", "Caótica", "Kanban Industrial"], p: [12, 7, 10, 10] },
+            // { q: "¿Herramienta de desarrollo favorita?", a: ["VS Code (Máquina universal)", "IntelliJ (Motor pesado)", "Vim (Engranaje clásico)", "Sublime (Vapor ligero)"], p: [12, 10, 8, 9] },
+            // { q: "¿Enfoque ante nuevas tecnologías?", a: ["Explorador temprano", "Adopción prudente", "Espero que maduren", "Prefiero lo conocido"], p: [12, 10, 7, 5] },
+            // { q: "¿Trato con el equipo?", a: ["Capitán autoritario", "Mentor empático", "Lobo solitario", "Colaborador"], p: [7, 12, 6, 11] },
+            // { q: "¿Visión a largo plazo?", a: ["Mantenimiento", "Innovación radical", "Estabilidad", "Expansión rápida"], p: [8, 12, 10, 11] }
+            { q: "¿Cómo reacciona cuando debe aprender una nueva tecnología para un proyecto?", a: ["Me emociona el desafío y busco recursos para aprenderla", "Lo veo como una oportunidad de crecimiento", "Me adapto aunque prefiero lo que ya conozco", "Me resulta estresante pero lo hago si es necesario"], p: [12, 10, 7, 5] },
+            { q: "¿Cómo maneja una situación donde su código no funciona y tiene presión de tiempo?", a: ["Mantengo la calma y debuggeo sistemáticamente", "Busco ayuda del equipo mientras investigo", "Me siento presionado pero encuentro soluciones", "Me estreso pero continúo trabajando"], p: [12, 11, 8, 6] },
+            { q: "¿Qué lo motiva principalmente en el desarrollo de software?", a: ["Resolver problemas complejos y crear soluciones", "Aprender constantemente y mejorar mis habilidades", "Trabajar en proyectos que impacten positivamente", "La estabilidad y el crecimiento profesional"], p: [12, 11, 10, 8] },
+            { q: "¿Cómo prefiere trabajar en un equipo de desarrollo?", a: ["Colaborando activamente y compartiendo conocimiento", "Aportando ideas y escuchando las de otros", "Cumpliendo mi parte y apoyando cuando es necesario", "Trabajando independientemente pero coordinado"], p: [12, 10, 8, 6] },
+            { q: "¿Qué hace cuando no entiende una parte del código de un compañero?", a: ["Investigo por mi cuenta y después consulto", "Pregunto directamente y pido explicación", "Busco documentación y ejemplos similares", "Trato de evitar tocar esa sección"], p: [12, 10, 8, 4] },
+            { q: "¿Cómo ve los errores en el desarrollo?", a: ["Como oportunidades de aprendizaje valiosas", "Como parte natural del proceso de desarrollo", "Como situaciones que debo minimizar", "Como problemas que me generan ansiedad"], p: [12, 10, 7, 4] },
+            { q: "¿Qué aspectos del desarrollo le generan más curiosidad?", a: ["Nuevas tecnologías y arquitecturas innovadoras", "Optimización de rendimiento y mejores prácticas", "UX/UI y cómo impacta a los usuarios", "Metodologías y procesos de trabajo"], p: [12, 10, 11, 8] },
+            { q: "¿Cuál es su enfoque hacia las herramientas de IA en el desarrollo?", a: ["Las uso activamente para mejorar mi productividad", "Las exploro y aprendo cómo integrarlas", "Las uso ocasionalmente cuando es necesario", "Prefiero métodos tradicionales de desarrollo"], p: [12, 10, 7, 4] },
+            { q: "¿Cómo maneja los cambios de requerimientos en medio de un proyecto?", a: ["Los veo como una oportunidad de mejora", "Me adapto y replanifico según sea necesario", "Me resulta incómodo pero me ajusto", "Prefiero que se mantengan los planes originales"], p: [12, 10, 6, 4] }
+        ];
+
+        let currentQuestion = 0;
+        let totalScore = 0;
+
+        function toggleAlchemy() {
+            const modal = document.getElementById('alchemy-modal');
+            const isVisible = modal.style.display === 'flex';
+            
+            if (!isVisible) {
+                currentQuestion = 0;
+                totalScore = 0;
+                document.getElementById('quiz-container').classList.remove('hidden');
+                document.getElementById('quiz-result').classList.add('hidden');
+                showQuestion();
+                modal.style.display = 'flex';
+            } else {
+                modal.style.display = 'none';
+            }
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('question-text').innerText = `${currentQuestion + 1}. ${q.q}`;
+            const grid = document.getElementById('answers-grid');
+            grid.innerHTML = '';
+            
+            q.a.forEach((ans, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn uppercase';
+                btn.innerText = ans;
+                btn.onclick = () => selectAnswer(q.p[idx]);
+                grid.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(points) {
+            totalScore += points;
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            const resultDiv = document.getElementById('quiz-result');
+            resultDiv.classList.remove('hidden');
+            
+            // Calculamos porcentaje: Máximo posible es 96 (12*8)
+            // Lógica: Mínimo 72% garantizado por contrato
+            let percent = Math.floor((totalScore / 108) * 100);
+            if (percent < 72) percent = 72 + (percent % 10); // Ajuste para nunca bajar del 72%
+
+            document.getElementById('final-score').innerText = `${percent}%`;
+            
+            const rotation = (percent / 100) * 180 - 90;
+            compNeedle.style.transform = `rotate(${rotation}deg)`;
+            
+            let desc = "";
+            if(percent > 90) desc = "SÍNTESIS PERFECTA. El candidato es la pieza que completa su maquinaria.";
+            else if(percent > 80) desc = "SÍNTESIS ESTABLE. Los engranajes encajan con precisión quirúrgica.";
+            else desc = "SÍNTESIS ACEPTABLE. Se requiere lubricación adicional en algunos procesos.";
+            
+            document.getElementById('result-desc').innerText = desc;
+            logMessage(`SÍNTESIS FINALIZADA: ${percent}% de compatibilidad.`);
+        }
+        
+        // Configurar altura de terminal al cargar
+        window.addEventListener('load', () => {
+            setTimeout(setTerminalHeight, 100); // Delay para asegurar que el DOM esté completamente cargado
+        });
+        //  Configurar la altura de terminal al redimensionar
+        window.addEventListener('resize', setTerminalHeight);
+    </script>
+</body>
+</html>
