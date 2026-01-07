@@ -27,7 +27,8 @@
             background-image: radial-gradient(circle, #2c2c2c 1px, transparent 1px);
             background-size: 30px 30px;
             color: var(--steam-white);
-            font-family: 'Special+Elite', cursive;
+            /* font-family: 'Special+Elite', cursive; */
+            font-family: 'Calibri';
             overflow: hidden; /* Evitamos scroll global para la experiencia de consola */
         }
 
