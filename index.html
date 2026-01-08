@@ -14,8 +14,8 @@
     <!-- Modal Alquimia (El Minijuego) -->
     <div id="alchemy-modal">
         <div class="modal-content steampunk-border">
-            <button class="absolute top-2 right-4 text-brass text-2xl" onclick="toggleAlchemy()">×</button>
-            <h2 class="text-2xl text-gold mb-4 text-center uppercase steam-font" style="color: #e5e7eb; font-family: 'Courier New', Courier, monospace;">
+            <button class="absolute top-2 right-4 text-brass text-2xl" onclick="toggleAlchemy()" data-translate="close">×</button>
+            <h2 class="text-2xl text-gold mb-4 text-center uppercase steam-font" style="color: #e5e7eb; font-family: 'Courier New', Courier, monospace;" data-translate="quiz-title">
                 Sintetizador de Candidato Ideal
             </h2>
             <div id="quiz-container">
@@ -31,10 +31,10 @@
                         <text x="50" y="55" text-anchor="middle" font-size="12" fill="var(--gold)" style="font-family:serif">S.W.</text>
                     </svg>
                 </div>
-                <p class="text-sm text-brass mb-2 uppercase tracking-widest">Aprobado por SteamWorks</p>
+                <p class="text-sm text-brass mb-2 uppercase tracking-widest" data-translate="approved-by">Aprobado por SteamWorks</p>
                 <div class="text-5xl text-gold mb-4 font-bold" id="final-score">83%</div>
                 <p id="result-desc" class="text-xs italic terminal-text mb-6">IDONEIDAD SUFICIENTE PARA OPERACIONES.</p>
-                <button class="px-6 py-2 border-2 border-brass text-brass uppercase hover:bg-brass hover:text-black transition" onclick="toggleAlchemy()">Cerrar Escotilla</button>
+                <button class="px-6 py-2 border-2 border-brass text-brass uppercase hover:bg-brass hover:text-black transition" onclick="toggleAlchemy()" data-translate="close-hatch">Cerrar Escotilla</button>
             </div>
         </div>
     </div>
@@ -43,6 +43,18 @@
         
         <!-- Header -->
         <header class="flex flex-col md:flex-row justify-between items-center mb-6 border-b-4 border-double border-brass pb-6 gap-4">
+            <!-- Selector de Idioma -->
+            <div class="absolute top-2 right-2 flex gap-2 z-10">
+                <button id="lang-es" class="language-btn active" onclick="changeLanguage('es')">
+                    <img src="https://flagcdn.com/w20/es.png" alt="Español" class="w-4 h-3">
+                    <span class="text-xs">ES</span>
+                </button>
+                <button id="lang-en" class="language-btn" onclick="changeLanguage('en')">
+                    <img src="https://flagcdn.com/w20/gb.png" alt="English" class="w-4 h-3">
+                    <span class="text-xs">EN</span>
+                </button>
+            </div>
+            
             <div class="flex flex-col md:flex-row items-center gap-6">
                 <!-- Foto de Perfil -->
                 <div class="profile-frame">
@@ -53,18 +65,18 @@
                         <!-- Desarrollador Full Stack -->
                          Daniel Núñez Santiago
                     </h1>
-                    <p class="text-sm text-copper italic tracking-widest uppercase">Desarrollador Full Stack</p>
+                    <p class="text-sm text-copper italic tracking-widest uppercase" data-translate="job-title">Desarrollador Full Stack</p>
                 </div>
             </div>
             
             <div class="flex gap-4 bg-black/40 p-3 border border-brass/30">
                 <div class="gauge-container">
                     <div class="needle" id="comp-needle" style="transform: rotate(-90deg);"></div>
-                    <span class="text-[8px] absolute bottom-2 text-brass">IDONEIDAD</span>
+                    <span class="text-[8px] absolute bottom-2 text-brass" data-translate="suitability">IDONEIDAD</span>
                 </div>
                 <div class="flex flex-col justify-center items-center">
                     <button class="valve-btn" onclick="toggleAlchemy()"></button>
-                    <span class="text-[8px] mt-1 text-brass uppercase">Laboratorio</span>
+                    <span class="text-[8px] mt-1 text-brass uppercase" data-translate="laboratory">Laboratorio</span>
                 </div>
             </div>
         </header>
@@ -78,8 +90,8 @@
             text-transform: uppercase; 
             text-shadow: 2px 2px 0px #3d2b1f; /* Sombra sólida tipo relieve */
             letter-spacing: 3px;
-        ">📜 Bitácora del Operador</h2>
-            <p class="text-xs md:text-sm leading-relaxed text-steam-white/80 ">
+        " data-translate="operator-log">📜 Bitácora del Operador</h2>
+            <p class="text-xs md:text-sm leading-relaxed text-steam-white/80" data-translate="about-me">
                 Un “friki” curioso e inquieto que percibe el aprendizaje y
                 la adaptación como una forma de vida. Mi historial de Youtube
                 esta lleno de videos de tecnología, programación y análisis
@@ -94,7 +106,7 @@
                 <!-- Contacto -->
                 <section>
                     <h2 class="text-lg text-brass border-b border-brass mb-3 uppercase tracking-widest flex items-center" style="font-family: 'Courier New', Courier, monospace;">
-                        <span class="mr-2">📡</span> Canales de contacto
+                        <span class="mr-2">📡</span> <span data-translate="contact-channels">Canales de contacto</span>
                     </h2>
                     <div class="flex flex-col gap-2">
                         <a href="mailto:arkano@steamworks.io" class="contact-pill">
@@ -112,7 +124,7 @@
                 <!-- Tecnologías -->
                 <section>
                     <h2 class="text-lg text-brass border-b border-brass mb-3 uppercase tracking-widest flex items-center" style="font-family: 'Courier New', Courier, monospace;">
-                        <span class="mr-2">⚙️</span> Tecnologías
+                        <span class="mr-2">⚙️</span> <span data-translate="technologies">Tecnologías</span>
                     </h2>
                     <div class="grid grid-cols-2 gap-2">
                         <div class="text-sm p-2 border border-copper/40 bg-black/30">Node.js / Express</div>
@@ -133,33 +145,33 @@
                 <!-- Lenguas (Desplegable) -->
                 <section class="border border-brass/30 p-2">
                     <button class="w-full text-left text-brass uppercase text-sm flex justify-between items-center" onclick="toggleAccordion(this)" style="font-family: 'Courier New', Courier, monospace;">
-                        <span>🗣️ Protocolos de comunicación</span>
+                        <span>🗣️ <span data-translate="communication-protocols">Protocolos de comunicación</span></span>
                         <span>+</span>
                     </button>
                     <div class="accordion-content space-y-2 mt-2">
-                        <div class="text-sm">Español (Nativo - Presión Máxima)</div>
-                        <div class="text-sm">Inglés (B2 - Transmisión Fluida)</div>
+                        <div class="text-sm" data-translate="spanish-native">Español (Nativo - Presión Máxima)</div>
+                        <div class="text-sm" data-translate="english-b2">Inglés (B2 - Transmisión Fluida)</div>
                     </div>
                 </section>
 
                 <!-- Educación (Desplegable) -->
                 <section class="border border-brass/30 p-2">
                     <button class="w-full text-left text-brass uppercase text-sm flex justify-between items-center" onclick="toggleAccordion(this)" style="font-family: 'Courier New', Courier, monospace;">
-                        <span>🎓 Academia Central</span>
+                        <span>🎓 <span data-translate="central-academy">Academia Central</span></span>
                         <span>+</span>
                     </button>
                     <div class="accordion-content space-y-3 mt-2">
                         <div class="border-l-2 border-copper pl-2">
-                                <p class="text-sm font-bold">Grado en Ciencias Ambientales</p>
-                                <p class="text-xs italic">Universidad de Extremadura (2013-2018)</p>
+                                <p class="text-sm font-bold" data-translate="degree1-name">Grado en Ciencias Ambientales</p>
+                                <p class="text-xs italic" data-translate="degree1-institution">Universidad de Extremadura (2013-2018)</p>
                         </div>
                         <div class="border-l-2 border-copper pl-2">
-                            <p class="text-sm font-bold">Grado Superior en Desarrollo de Aplicaciones Web</p>
-                            <p class="text-xs italic">CESUR (2020-2021)</p>
+                            <p class="text-sm font-bold" data-translate="degree2-name">Grado Superior en Desarrollo de Aplicaciones Web</p>
+                            <p class="text-xs italic" data-translate="degree2-institution">CESUR (2020-2021)</p>
                         </div>
                         <div class="border-l-2 border-copper pl-2">
-                            <p class="text-sm font-bold">Grado Superior en Desarrollo de Aplicaciones Web</p>
-                            <p class="text-xs italic">Colegio Virgen de Guadalupe (2021-2022)</p>
+                            <p class="text-sm font-bold" data-translate="degree3-name">Grado Superior en Desarrollo de Aplicaciones Web</p>
+                            <p class="text-xs italic" data-translate="degree3-institution">Colegio Virgen de Guadalupe (2021-2022)</p>
                         </div>
                     </div>
                 </section>
@@ -167,29 +179,29 @@
                 <!-- Certificaciones (Desplegable) -->
                 <section class="border border-brass/30 p-2">
                     <button class="w-full text-left text-brass uppercase text-sm flex justify-between items-center" onclick="toggleAccordion(this)" style="font-family: 'Courier New', Courier, monospace;">
-                        <span>📜 Licencias y Certificaciones</span>
+                        <span>📜 <span data-translate="licenses-certifications">Licencias y Certificaciones</span></span>
                         <span>+</span>
                     </button>
                     <div class="accordion-content space-y-3 mt-2">
                         <div class="border-l-2 border-copper pl-2">
-                            <p class="text-sm font-bold">Generative AI Certified Associate</p>
-                            <p class="text-xs italic">CertUin - Octubre 2025</p>
+                            <p class="text-sm font-bold" data-translate="cert1-name">Generative AI Certified Associate</p>
+                            <p class="text-xs italic" data-translate="cert1-institution">CertUin - Octubre 2025</p>
                         </div>
                         <div class="border-l-2 border-copper pl-2">
-                            <p class="text-sm font-bold">Principios SOLID y Clean Code</p>
-                            <p class="text-xs italic">Udemy - Enero 2025</p>
+                            <p class="text-sm font-bold" data-translate="cert2-name">Principios SOLID y Clean Code</p>
+                            <p class="text-xs italic" data-translate="cert2-institution">Udemy - Enero 2025</p>
                         </div>
                         <div class="border-l-2 border-copper pl-2">
-                            <p class="text-sm font-bold">Angular y NodeJS en Producción - Configurar un Servidor VPS</p>
-                            <p class="text-xs italic">Udemy - Junio 2023</p>
+                            <p class="text-sm font-bold" data-translate="cert3-name">Angular y NodeJS en Producción - Configurar un Servidor VPS</p>
+                            <p class="text-xs italic" data-translate="cert3-institution">Udemy - Junio 2023</p>
                         </div>
                         <div class="border-l-2 border-copper pl-2">
-                            <p class="text-sm font-bold">Git y la Terminal de Comandos - Para Programadores</p>
-                            <p class="text-xs italic">Udemy - Junio 2023</p>
+                            <p class="text-sm font-bold" data-translate="cert4-name">Git y la Terminal de Comandos - Para Programadores</p>
+                            <p class="text-xs italic" data-translate="cert4-institution">Udemy - Junio 2023</p>
                         </div>
                         <div class="border-l-2 border-copper pl-2">
-                            <p class="text-sm font-bold">ECMAScript 6 (Intermedio)</p>
-                            <p class="text-xs italic">OpenWebinars - Noviembre 2021</p>
+                            <p class="text-sm font-bold" data-translate="cert5-name">ECMAScript 6 (Intermedio)</p>
+                            <p class="text-xs italic" data-translate="cert5-institution">OpenWebinars - Noviembre 2021</p>
                         </div>
                     </div>
                 </section>
@@ -197,31 +209,31 @@
                 <!-- Soft Skills -->
                 <section>
                     <h2 class="text-brass border-b border-brass mb-3 uppercase tracking-widest flex items-center text-sm" style="font-family: 'Courier New', Courier, monospace;">
-                        <span class="mr-2">🔧</span> Habilidades de Operador
+                        <span class="mr-2">🔧</span> <span data-translate="operator-skills">Habilidades de Operador</span>
                     </h2>
                     <div class="space-y-3">
                         <div>
-                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span>Autonomía</span><span>92%</span></div>
+                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span data-translate="autonomy">Autonomía</span><span>92%</span></div>
                             <div class="progress-pipe"><div class="steam-fill" style="width: 92%"></div></div>
                         </div>
                         <div>
-                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span>Comunicación Efectiva</span><span>76%</span></div>
+                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span data-translate="effective-communication">Comunicación Efectiva</span><span>76%</span></div>
                             <div class="progress-pipe"><div class="steam-fill" style="width: 76%"></div></div>
                         </div>
                         <div>
-                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span>Pensamiento Crítico</span><span>90%</span></div>
+                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span data-translate="critical-thinking">Pensamiento Crítico</span><span>90%</span></div>
                             <div class="progress-pipe"><div class="steam-fill" style="width: 90%"></div></div>
                         </div>
                         <div>
-                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span>Resolución de Problemas</span><span>95%</span></div>
+                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span data-translate="problem-solving">Resolución de Problemas</span><span>95%</span></div>
                             <div class="progress-pipe"><div class="steam-fill" style="width: 95%"></div></div>
                         </div>
                         <div>
-                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span>Empatía y Paciencia</span><span>85%</span></div>
+                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span data-translate="empathy-patience">Empatía y Paciencia</span><span>85%</span></div>
                             <div class="progress-pipe"><div class="steam-fill" style="width: 85%"></div></div>
                         </div>
                         <div>
-                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span>Adaptabilidad y Aprendizaje</span><span>86%</span></div>
+                            <div class="flex justify-between text-[9px] mb-1 uppercase text-copper font-bold"><span data-translate="adaptability-learning">Adaptabilidad y Aprendizaje</span><span>86%</span></div>
                             <div class="progress-pipe"><div class="steam-fill" style="width: 86%"></div></div>
                         </div>
                     </div>
@@ -231,28 +243,28 @@
             <!-- Columna Derecha: Crónicas y Consola -->
             <div id="right-column" class="md:col-span-2 flex flex-col space-y-4">
                 <section id="experience-section" class="flex-shrink-0">
-                    <h2 class="text-xl text-brass border-b-2 border-brass mb-4 uppercase tracking-tighter" style="font-family: 'Courier New', Courier, monospace;">📜 Crónicas de Ingeniería</h2>
+                    <h2 class="text-xl text-brass border-b-2 border-brass mb-4 uppercase tracking-tighter" style="font-family: 'Courier New', Courier, monospace;" data-translate="engineering-chronicles">📜 Crónicas de Ingeniería</h2>
                     <div class="space-y-3">
-                        <div class="steam-card p-3" onclick="logExperience('PRACTICAS FTC', 'Las tareas que se me asignaron fueron la detección, rastreo y solución de errores en el back-end del sector ')">
+                        <div class="steam-card p-3" onclick="logExperience('job1-exp-title', 'job1-exp-desc')">
                             <div class="flex justify-between items-start">
-                                <h3 class="text-md text-copper uppercase font-bold" style="font-family: 'Courier New', Courier, monospace;">Prácticas FTC @ Indra Sistemas S.A.</h3>
-                                <span class="text-[9px] bg-copper/20 px-2 py-1 border border-copper/50">Marzo 2022 - Junio 2022</span>
+                                <h3 class="text-md text-copper uppercase font-bold" style="font-family: 'Courier New', Courier, monospace;" data-translate="job1-title">Prácticas FTC @ Indra Sistemas S.A.</h3>
+                                <span class="text-[9px] bg-copper/20 px-2 py-1 border border-copper/50" data-translate="job1-date">Marzo 2022 - Junio 2022</span>
                             </div>
                             <!-- <p class="text-[10px] mt-1 italic">Presiona para ver registros de la bitácora...</p> -->
                         </div>
 
-                        <div class="steam-card p-3" onclick="logExperience('TÉCNICO DE PROGRAMACIÓN', 'Desarrollé interactivos con tecnologías web y motores como Unity y PlayCanvas de forma autónoma, estando a cargo del desarrolo y despliegue. También llevé a cabo el despliegue y mantenimiento de sistemas en remoto')">
+                        <div class="steam-card p-3" onclick="logExperience('job2-exp-title', 'job2-exp-desc')">
                             <div class="flex justify-between items-start">
-                                <h3 class="text-md text-copper uppercase font-bold" style="font-family: 'Courier New', Courier, monospace;">Técnico de Programación @ Tecnología Creativa Para el Ocio S.L.</h3>
-                                <span class="text-[9px] bg-copper/20 px-2 py-1 border border-copper/50">Julio 2022 - Octubre 2022</span>
+                                <h3 class="text-md text-copper uppercase font-bold" style="font-family: 'Courier New', Courier, monospace;" data-translate="job2-title">Técnico de Programación @ Tecnología Creativa Para el Ocio S.L.</h3>
+                                <span class="text-[9px] bg-copper/20 px-2 py-1 border border-copper/50" data-translate="job2-date">Julio 2022 - Octubre 2022</span>
                             </div>
                             <!-- <p class="text-[10px] mt-1 italic">Presiona para ver registros de la bitácora...</p> -->
                         </div>
 
-                        <div class="steam-card p-3" onclick="logExperience('FULLSTACK STACK DEVELOPER', 'He llevado a cabo el desarrollo de módulos para diversas webs y servicios como el registro de incidencias, un ERP de venta de entradas, o venta online. También he sido responsable del desarrollo y mantenimiento de e-commerce, integración con diferentes servicios back-office y front-office adaptados a las necesidades específicas de cada cliente')">
+                        <div class="steam-card p-3" onclick="logExperience('job3-exp-title', 'job3-exp-desc')">
                             <div class="flex justify-between items-start">
-                                <h3 class="text-md text-copper uppercase font-bold" style="font-family: 'Courier New', Courier, monospace;">Full Stack Developer @ Azulae S.L.</h3>
-                                <span class="text-[9px] bg-copper/20 px-2 py-1 border border-copper/50">Octubre 2023 - Actualidad</span>
+                                <h3 class="text-md text-copper uppercase font-bold" style="font-family: 'Courier New', Courier, monospace;" data-translate="job3-title">Full Stack Developer @ Azulae S.L.</h3>
+                                <span class="text-[9px] bg-copper/20 px-2 py-1 border border-copper/50" data-translate="job3-date">Octubre 2023 - Actualidad</span>
                             </div>
                             <!-- <p class="text-[10px] mt-1 italic">Presiona para ver registros de la bitácora...</p> -->
                         </div>
@@ -263,15 +275,15 @@
                 <section id="terminal-section" class="bg-black p-4 border-2 border-brass/50 relative flex flex-col">
                     <div class="absolute top-1 right-2 text-[8px] text-red-600 animate-pulse font-bold">REC_DRIVE_01</div>
                     <div class="flex justify-between items-center mb-2 border-b border-brass/20 pb-1">
-                        <div class="text-[9px] text-brass uppercase flex-shrink-0" style="font-family: 'Courier New', Courier, monospace;">Terminal de Datos de Ingeniería</div>
-                        <button onclick="clearTerminal()" class="text-[8px] text-copper hover:text-brass border border-copper/50 hover:border-brass px-2 py-1 uppercase transition-colors">
+                        <div class="text-[9px] text-brass uppercase flex-shrink-0" style="font-family: 'Courier New', Courier, monospace;" data-translate="terminal-title">Terminal de Datos de Ingeniería</div>
+                        <button onclick="clearTerminal()" class="text-[8px] text-copper hover:text-brass border border-copper/50 hover:border-brass px-2 py-1 uppercase transition-colors" data-translate="clear-btn">
                             Limpiar
                         </button>
                     </div>
                     <div id="console-log" class="terminal-text text-xs overflow-y-auto space-y-2 flex-1">
-                        [SISTEMA INICIALIZADO]<br>
-                        > Todos los engranajes están engrasados.<br>
-                        > Esperando interacción del operador...
+                        <span data-translate="system-initialized">[SISTEMA INICIALIZADO]</span><br>
+                        <span data-translate="all-gears">> Todos los engranajes están engrasados.</span><br>
+                        <span data-translate="waiting-operator">> Esperando interacción del operador...</span>
                     </div>
                 </section>
             </div>
@@ -329,44 +341,46 @@
             consoleLog.prepend(entry);
         }
 
-        function logExperience(id, details) {
-            logMessage(`ACCEDIENDO A ARCHIVOS DE [${id}]...`, true);
+        function logExperience(titleKey, detailsKey) {
+            const title = translations[currentLanguage][titleKey] || titleKey;
+            const details = translations[currentLanguage][detailsKey] || detailsKey;
+            logMessage(`${translations[currentLanguage]['accessing-files']} [${title}]...`, true);
             setTimeout(() => {
                 logMessage(`REGISTRO: ${details}`);
             }, 300);
         }
 
         function clearTerminal() {
-            // consoleLog.innerHTML = `
-            //     [SISTEMA INICIALIZADO]<br>
-            //     > Todos los engranajes están engrasados.<br>
-            //     > Esperando interacción del operador...
-            // `;
             consoleLog.innerHTML = `
-                [SISTEMA INICIALIZADO]<br>
+                ${translations[currentLanguage]['system-initialized']}<br>
             `;
         }
 
         // --- Lógica del Minijuego (Alchemy Quizz) ---
-        const questions = [
-            // { q: "¿Qué combustible prefiere para su backend?", a: ["Vapor de Node.js", "Engranajes de PHP", "Carbón de Java", "Éter de Python"], p: [10, 12, 8, 10] },
-            // { q: "¿Cómo debe ser la interfaz de usuario?", a: ["Intuitiva como un reloj", "Compleja y llena de palancas", "Minimalista", "Reactiva al tacto"], p: [12, 10, 12, 8] },
-            // { q: "¿Nivel de presión soportado?", a: ["Baja", "Media", "Alta (Modo Caldera)", "Extrema (Nuclear)"], p: [5, 8, 10, 12] },
-            // { q: "¿Metodología de trabajo?", a: ["Agile (Viento en popa)", "Cascada (Catarata)", "Caótica", "Kanban Industrial"], p: [12, 7, 10, 10] },
-            // { q: "¿Herramienta de desarrollo favorita?", a: ["VS Code (Máquina universal)", "IntelliJ (Motor pesado)", "Vim (Engranaje clásico)", "Sublime (Vapor ligero)"], p: [12, 10, 8, 9] },
-            // { q: "¿Enfoque ante nuevas tecnologías?", a: ["Explorador temprano", "Adopción prudente", "Espero que maduren", "Prefiero lo conocido"], p: [12, 10, 7, 5] },
-            // { q: "¿Trato con el equipo?", a: ["Capitán autoritario", "Mentor empático", "Lobo solitario", "Colaborador"], p: [7, 12, 6, 11] },
-            // { q: "¿Visión a largo plazo?", a: ["Mantenimiento", "Innovación radical", "Estabilidad", "Expansión rápida"], p: [8, 12, 10, 11] }
-            { q: "¿Cómo reacciona cuando debe aprender una nueva tecnología para un proyecto?", a: ["Me emociona el desafío y busco recursos para aprenderla", "Lo veo como una oportunidad de crecimiento", "Me adapto aunque prefiero lo que ya conozco", "Me resulta estresante pero lo hago si es necesario"], p: [12, 10, 7, 5] },
-            { q: "¿Cómo maneja una situación donde su código no funciona y tiene presión de tiempo?", a: ["Mantengo la calma y debuggeo sistemáticamente", "Busco ayuda del equipo mientras investigo", "Me siento presionado pero encuentro soluciones", "Me estreso pero continúo trabajando"], p: [12, 11, 8, 6] },
-            { q: "¿Qué lo motiva principalmente en el desarrollo de software?", a: ["Resolver problemas complejos y crear soluciones", "Aprender constantemente y mejorar mis habilidades", "Trabajar en proyectos que impacten positivamente", "La estabilidad y el crecimiento profesional"], p: [12, 11, 10, 8] },
-            { q: "¿Cómo prefiere trabajar en un equipo de desarrollo?", a: ["Colaborando activamente y compartiendo conocimiento", "Aportando ideas y escuchando las de otros", "Cumpliendo mi parte y apoyando cuando es necesario", "Trabajando independientemente pero coordinado"], p: [12, 10, 8, 6] },
-            { q: "¿Qué hace cuando no entiende una parte del código de un compañero?", a: ["Investigo por mi cuenta y después consulto", "Pregunto directamente y pido explicación", "Busco documentación y ejemplos similares", "Trato de evitar tocar esa sección"], p: [12, 10, 8, 4] },
-            { q: "¿Cómo ve los errores en el desarrollo?", a: ["Como oportunidades de aprendizaje valiosas", "Como parte natural del proceso de desarrollo", "Como situaciones que debo minimizar", "Como problemas que me generan ansiedad"], p: [12, 10, 7, 4] },
-            { q: "¿Qué aspectos del desarrollo le generan más curiosidad?", a: ["Nuevas tecnologías y arquitecturas innovadoras", "Optimización de rendimiento y mejores prácticas", "UX/UI y cómo impacta a los usuarios", "Metodologías y procesos de trabajo"], p: [12, 10, 11, 8] },
-            { q: "¿Cuál es su enfoque hacia las herramientas de IA en el desarrollo?", a: ["Las uso activamente para mejorar mi productividad", "Las exploro y aprendo cómo integrarlas", "Las uso ocasionalmente cuando es necesario", "Prefiero métodos tradicionales de desarrollo"], p: [12, 10, 7, 4] },
-            { q: "¿Cómo maneja los cambios de requerimientos en medio de un proyecto?", a: ["Los veo como una oportunidad de mejora", "Me adapto y replanifico según sea necesario", "Me resulta incómodo pero me ajusto", "Prefiero que se mantengan los planes originales"], p: [12, 10, 6, 4] }
-        ];
+        const questions = {
+            es: [
+                { q: "¿Cómo reacciona cuando debe aprender una nueva tecnología para un proyecto?", a: ["Me emociona el desafío y busco recursos para aprenderla", "Lo veo como una oportunidad de crecimiento", "Me adapto aunque prefiero lo que ya conozco", "Me resulta estresante pero lo hago si es necesario"], p: [12, 10, 7, 5] },
+                { q: "¿Cómo maneja una situación donde su código no funciona y tiene presión de tiempo?", a: ["Mantengo la calma y debuggeo sistemáticamente", "Busco ayuda del equipo mientras investigo", "Me siento presionado pero encuentro soluciones", "Me estreso pero continúo trabajando"], p: [12, 11, 8, 6] },
+                { q: "¿Qué lo motiva principalmente en el desarrollo de software?", a: ["Resolver problemas complejos y crear soluciones", "Aprender constantemente y mejorar mis habilidades", "Trabajar en proyectos que impacten positivamente", "La estabilidad y el crecimiento profesional"], p: [12, 11, 10, 8] },
+                { q: "¿Cómo prefiere trabajar en un equipo de desarrollo?", a: ["Colaborando activamente y compartiendo conocimiento", "Aportando ideas y escuchando las de otros", "Cumpliendo mi parte y apoyando cuando es necesario", "Trabajando independientemente pero coordinado"], p: [12, 10, 8, 6] },
+                { q: "¿Qué hace cuando no entiende una parte del código de un compañero?", a: ["Investigo por mi cuenta y después consulto", "Pregunto directamente y pido explicación", "Busco documentación y ejemplos similares", "Trato de evitar tocar esa sección"], p: [12, 10, 8, 4] },
+                { q: "¿Cómo ve los errores en el desarrollo?", a: ["Como oportunidades de aprendizaje valiosas", "Como parte natural del proceso de desarrollo", "Como situaciones que debo minimizar", "Como problemas que me generan ansiedad"], p: [12, 10, 7, 4] },
+                { q: "¿Qué aspectos del desarrollo le generan más curiosidad?", a: ["Nuevas tecnologías y arquitecturas innovadoras", "Optimización de rendimiento y mejores prácticas", "UX/UI y cómo impacta a los usuarios", "Metodologías y procesos de trabajo"], p: [12, 10, 11, 8] },
+                { q: "¿Cuál es su enfoque hacia las herramientas de IA en el desarrollo?", a: ["Las uso activamente para mejorar mi productividad", "Las exploro y aprendo cómo integrarlas", "Las uso ocasionalmente cuando es necesario", "Prefiero métodos tradicionales de desarrollo"], p: [12, 10, 7, 4] },
+                { q: "¿Cómo maneja los cambios de requerimientos en medio de un proyecto?", a: ["Los veo como una oportunidad de mejora", "Me adapto y replanifico según sea necesario", "Me resulta incómodo pero me ajusto", "Prefiero que se mantengan los planes originales"], p: [12, 10, 6, 4] }
+            ],
+            en: [
+                { q: "How do you react when you need to learn a new technology for a project?", a: ["I get excited about the challenge and look for resources to learn it", "I see it as a growth opportunity", "I adapt although I prefer what I already know", "I find it stressful but do it if necessary"], p: [12, 10, 7, 5] },
+                { q: "How do you handle a situation where your code doesn't work and you're under time pressure?", a: ["I stay calm and debug systematically", "I seek help from the team while investigating", "I feel pressured but find solutions", "I stress but continue working"], p: [12, 11, 8, 6] },
+                { q: "What motivates you mainly in software development?", a: ["Solving complex problems and creating solutions", "Constantly learning and improving my skills", "Working on projects that impact positively", "Stability and professional growth"], p: [12, 11, 10, 8] },
+                { q: "How do you prefer to work in a development team?", a: ["Actively collaborating and sharing knowledge", "Contributing ideas and listening to others", "Doing my part and supporting when necessary", "Working independently but coordinated"], p: [12, 10, 8, 6] },
+                { q: "What do you do when you don't understand part of a colleague's code?", a: ["I research on my own and then consult", "I ask directly and request explanation", "I look for documentation and similar examples", "I try to avoid touching that section"], p: [12, 10, 8, 4] },
+                { q: "How do you see errors in development?", a: ["As valuable learning opportunities", "As a natural part of the development process", "As situations I should minimize", "As problems that generate anxiety"], p: [12, 10, 7, 4] },
+                { q: "What aspects of development generate more curiosity in you?", a: ["New technologies and innovative architectures", "Performance optimization and best practices", "UX/UI and how it impacts users", "Methodologies and work processes"], p: [12, 10, 11, 8] },
+                { q: "What is your approach towards AI tools in development?", a: ["I actively use them to improve my productivity", "I explore and learn how to integrate them", "I use them occasionally when necessary", "I prefer traditional development methods"], p: [12, 10, 7, 4] },
+                { q: "How do you handle requirement changes in the middle of a project?", a: ["I see them as an improvement opportunity", "I adapt and replan as necessary", "I find it uncomfortable but adjust", "I prefer to keep the original plans"], p: [12, 10, 6, 4] }
+            ]
+        };
 
         let currentQuestion = 0;
         let totalScore = 0;
@@ -388,7 +402,8 @@
         }
 
         function showQuestion() {
-            const q = questions[currentQuestion];
+            const currentQuestions = questions[currentLanguage];
+            const q = currentQuestions[currentQuestion];
             document.getElementById('question-text').innerText = `${currentQuestion + 1}. ${q.q}`;
             const grid = document.getElementById('answers-grid');
             grid.innerHTML = '';
@@ -405,7 +420,8 @@
         function selectAnswer(points) {
             totalScore += points;
             currentQuestion++;
-            if (currentQuestion < questions.length) {
+            const currentQuestions = questions[currentLanguage];
+            if (currentQuestion < currentQuestions.length) {
                 showQuestion();
             } else {
                 finishQuiz();
@@ -417,7 +433,7 @@
             const resultDiv = document.getElementById('quiz-result');
             resultDiv.classList.remove('hidden');
             
-            // Calculamos porcentaje: Máximo posible es 96 (12*8)
+            // Calculamos porcentaje: Máximo posible es 108 (12*9)
             // Lógica: Mínimo 72% garantizado por contrato
             let percent = Math.floor((totalScore / 108) * 100);
             if (percent < 72) percent = 72 + (percent % 10); // Ajuste para nunca bajar del 72%
@@ -428,12 +444,199 @@
             compNeedle.style.transform = `rotate(${rotation}deg)`;
             
             let desc = "";
-            if(percent > 90) desc = "SÍNTESIS PERFECTA. El candidato es la pieza que completa su maquinaria.";
-            else if(percent > 80) desc = "SÍNTESIS ESTABLE. Los engranajes encajan con precisión quirúrgica.";
-            else desc = "SÍNTESIS ACEPTABLE. Se requiere lubricación adicional en algunos procesos.";
+            if(percent > 90) desc = translations[currentLanguage]['perfect-synthesis'];
+            else if(percent > 80) desc = translations[currentLanguage]['stable-synthesis'];
+            else desc = translations[currentLanguage]['acceptable-synthesis'];
             
             document.getElementById('result-desc').innerText = desc;
-            logMessage(`SÍNTESIS FINALIZADA: ${percent}% de compatibilidad.`);
+            logMessage(`${translations[currentLanguage]['synthesis-complete']}: ${percent}% de compatibilidad.`);
+        }
+        // --- Sistema de Idiomas ---
+        const translations = {
+            es: {
+                'job-title': 'Desarrollador Full Stack',
+                'suitability': 'IDONEIDAD',
+                'laboratory': 'Laboratorio',
+                'operator-log': '📜 Bitácora del Operador',
+                'about-me': 'Un "friki" curioso e inquieto que percibe el aprendizaje y la adaptación como una forma de vida. Mi historial de Youtube esta lleno de videos de tecnología, programación y análisis de juegos y películas. Me encanta la resolución de problemas aplicando conocimiento y creatividad y esa es la razón por la que disfruto de sumergirme en el desarrollo de software.',
+                'contact-channels': 'Canales de contacto',
+                'technologies': 'Tecnologías',
+                'communication-protocols': 'Protocolos de comunicación',
+                'central-academy': 'Academia Central',
+                'licenses-certifications': 'Licencias y Certificaciones',
+                'operator-skills': 'Habilidades de Operador',
+                'engineering-chronicles': '📜 Crónicas de Ingeniería',
+                'terminal-title': 'Terminal de Datos de Ingeniería',
+                'clear-btn': 'Limpiar',
+                'quiz-title': 'Sintetizador de Candidato Ideal',
+                'close-hatch': 'Cerrar Escotilla',
+                'approved-by': 'Aprobado por SteamWorks',
+                'perfect-synthesis': 'SÍNTESIS PERFECTA. El candidato es la pieza que completa su maquinaria.',
+                'stable-synthesis': 'SÍNTESIS ESTABLE. Los engranajes encajan con precisión quirúrgica.',
+                'acceptable-synthesis': 'SÍNTESIS ACEPTABLE. Se requiere lubricación adicional en algunos procesos.',
+                'system-initialized': '[SISTEMA INICIALIZADO]',
+                'all-gears': '> Todos los engranajes están engrasados.',
+                'waiting-operator': '> Esperando interacción del operador...',
+                'accessing-files': 'ACCEDIENDO A ARCHIVOS DE',
+                'synthesis-complete': 'SÍNTESIS FINALIZADA',
+                'close': '×',
+                'autonomy': 'Autonomía',
+                'effective-communication': 'Comunicación Efectiva',
+                'critical-thinking': 'Pensamiento Crítico',
+                'problem-solving': 'Resolución de Problemas',
+                'empathy-patience': 'Empatía y Paciencia',
+                'adaptability-learning': 'Adaptabilidad y Aprendizaje',
+                'spanish-native': 'Español (Nativo - Presión Máxima)',
+                'english-b2': 'Inglés (B2 - Transmisión Fluida)',
+                // Trabajos
+                'job1-title': 'Prácticas FTC @ Indra Sistemas S.A.',
+                'job1-date': 'Marzo 2022 - Junio 2022',
+                'job2-title': 'Técnico de Programación @ Tecnología Creativa Para el Ocio S.L.',
+                'job2-date': 'Julio 2022 - Octubre 2022',
+                'job3-title': 'Full Stack Developer @ Azulae S.L.',
+                'job3-date': 'Octubre 2023 - Actualidad',
+                // Educación
+                'degree1-name': 'Grado en Ciencias Ambientales',
+                'degree1-institution': 'Universidad de Extremadura (2013-2018)',
+                'degree2-name': 'Grado Superior en Desarrollo de Aplicaciones Web',
+                'degree2-institution': 'CESUR (2020-2021)',
+                'degree3-name': 'Grado Superior en Desarrollo de Aplicaciones Web',
+                'degree3-institution': 'Colegio Virgen de Guadalupe (2021-2022)',
+                // Certificaciones
+                'cert1-name': 'Generative AI Certified Associate',
+                'cert1-institution': 'CertUin - Octubre 2025',
+                'cert2-name': 'Principios SOLID y Clean Code',
+                'cert2-institution': 'Udemy - Enero 2025',
+                'cert3-name': 'Angular y NodeJS en Producción - Configurar un Servidor VPS',
+                'cert3-institution': 'Udemy - Junio 2023',
+                'cert4-name': 'Git y la Terminal de Comandos - Para Programadores',
+                'cert4-institution': 'Udemy - Junio 2023',
+                'cert5-name': 'ECMAScript 6 (Intermedio)',
+                'cert5-institution': 'OpenWebinars - Noviembre 2021',
+                // Experiencias laborales
+                'job1-exp-title': 'PRÁCTICAS FTC',
+                'job1-exp-desc': 'Las tareas que se me asignaron fueron la detección, rastreo y solución de errores en el back-end del sector de defensa.',
+                'job2-exp-title': 'TÉCNICO DE PROGRAMACIÓN',
+                'job2-exp-desc': 'Desarrollé interactivos con tecnologías web y motores como Unity y PlayCanvas de forma autónoma, estando a cargo del desarrollo y despliegue. También llevé a cabo el despliegue y mantenimiento de sistemas en remoto.',
+                'job3-exp-title': 'FULL STACK DEVELOPER',
+                'job3-exp-desc': 'He llevado a cabo el desarrollo de módulos para diversas webs y servicios como el registro de incidencias, un ERP de venta de entradas, o venta online. También he sido responsable del desarrollo y mantenimiento de e-commerce, integración con diferentes servicios back-office y front-office adaptados a las necesidades específicas de cada cliente.'
+            },
+            en: {
+                'job-title': 'Full Stack Developer',
+                'suitability': 'SUITABILITY',
+                'laboratory': 'Laboratory',
+                'operator-log': '📜 Operator\'s Log',
+                'about-me': 'A curious and restless "geek" who perceives learning and adaptation as a way of life. My Youtube history is full of technology, programming and analysis videos of games and movies. I love problem solving by applying knowledge and creativity and that\'s the reason why I enjoy diving into software development.',
+                'contact-channels': 'Contact Channels',
+                'technologies': 'Technologies',
+                'communication-protocols': 'Communication Protocols',
+                'central-academy': 'Central Academy',
+                'licenses-certifications': 'Licenses & Certifications',
+                'operator-skills': 'Operator Skills',
+                'engineering-chronicles': '📜 Engineering Chronicles',
+                'terminal-title': 'Engineering Data Terminal',
+                'clear-btn': 'Clear',
+                'quiz-title': 'Ideal Candidate Synthesizer',
+                'close-hatch': 'Close Hatch',
+                'approved-by': 'Approved by SteamWorks',
+                'perfect-synthesis': 'PERFECT SYNTHESIS. The candidate is the piece that completes your machinery.',
+                'stable-synthesis': 'STABLE SYNTHESIS. Gears fit with surgical precision.',
+                'acceptable-synthesis': 'ACCEPTABLE SYNTHESIS. Additional lubrication required in some processes.',
+                'system-initialized': '[SYSTEM INITIALIZED]',
+                'all-gears': '> All gears are properly lubricated.',
+                'waiting-operator': '> Waiting for operator interaction...',
+                'accessing-files': 'ACCESSING FILES FROM',
+                'synthesis-complete': 'SYNTHESIS COMPLETE',
+                'close': '×',
+                'autonomy': 'Autonomy',
+                'effective-communication': 'Effective Communication',
+                'critical-thinking': 'Critical Thinking',
+                'problem-solving': 'Problem Solving',
+                'empathy-patience': 'Empathy and Patience',
+                'adaptability-learning': 'Adaptability and Learning',
+                'spanish-native': 'Spanish (Native - Maximum Pressure)',
+                'english-b2': 'English (B2 - Fluid Transmission)',
+                // Jobs
+                'job1-title': 'FTC Internship @ Indra Sistemas S.A.',
+                'job1-date': 'March 2022 - June 2022',
+                'job2-title': 'Programming Technician @ Tecnología Creativa Para el Ocio S.L.',
+                'job2-date': 'July 2022 - October 2022',
+                'job3-title': 'Full Stack Developer @ Azulae S.L.',
+                'job3-date': 'October 2023 - Present',
+                // Education
+                'degree1-name': 'Bachelor\'s Degree in Environmental Sciences',
+                'degree1-institution': 'University of Extremadura (2013-2018)',
+                'degree2-name': 'Higher Degree in Web Application Development',
+                'degree2-institution': 'CESUR (2020-2021)',
+                'degree3-name': 'Higher Degree in Web Application Development',
+                'degree3-institution': 'Virgen de Guadalupe College (2021-2022)',
+                // Certifications
+                'cert1-name': 'Generative AI Certified Associate',
+                'cert1-institution': 'CertUin - October 2025',
+                'cert2-name': 'SOLID Principles and Clean Code',
+                'cert2-institution': 'Udemy - January 2025',
+                'cert3-name': 'Angular and NodeJS in Production - Setting up a VPS Server',
+                'cert3-institution': 'Udemy - June 2023',
+                'cert4-name': 'Git and Command Line Terminal - For Programmers',
+                'cert4-institution': 'Udemy - June 2023',
+                'cert5-name': 'ECMAScript 6 (Intermediate)',
+                'cert5-institution': 'OpenWebinars - November 2021',
+                // Job experiences
+                'job1-exp-title': 'FTC INTERNSHIP',
+                'job1-exp-desc': 'The tasks assigned to me were the detection, tracking and solution of errors in the back-end of the defense sector.',
+                'job2-exp-title': 'PROGRAMMING TECHNICIAN',
+                'job2-exp-desc': 'I developed interactive applications with web technologies and engines like Unity and PlayCanvas autonomously, being in charge of development and deployment. I also carried out the deployment and maintenance of remote systems.',
+                'job3-exp-title': 'FULL STACK DEVELOPER',
+                'job3-exp-desc': 'I have carried out the development of modules for various websites and services such as incident registration, a ticket sales ERP, or online sales. I have also been responsible for developing and maintaining e-commerce, integration with different back-office and front-office services adapted to the specific needs of each client.'
+            }
+        };
+
+        let currentLanguage = 'es';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Actualizar botones activos
+            document.getElementById('lang-es').classList.toggle('active', lang === 'es');
+            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+            
+            // Traducir todos los elementos
+            const elements = document.querySelectorAll('[data-translate]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            // Actualizar el modal si está visible
+            updateModalLanguage(lang);
+            
+            // Actualizar consola
+            updateConsoleLanguage(lang);
+            
+            logMessage(`${translations[lang]['system-initialized']} - Idioma: ${lang.toUpperCase()}`);
+        }
+
+        function updateModalLanguage(lang) {
+            const modalTitle = document.querySelector('#alchemy-modal h2');
+            if (modalTitle) {
+                modalTitle.textContent = translations[lang]['quiz-title'];
+            }
+            
+            const closeBtn = document.querySelector('#alchemy-modal button[onclick="toggleAlchemy()"]');
+            if (closeBtn && closeBtn.textContent.includes('Cerrar') || closeBtn.textContent.includes('Close')) {
+                closeBtn.textContent = translations[lang]['close-hatch'];
+            }
+            
+            const approvedText = document.querySelector('#quiz-result p');
+            if (approvedText && approvedText.textContent.includes('Aprobado')) {
+                approvedText.textContent = translations[lang]['approved-by'];
+            }
+        }
+
+        function updateConsoleLanguage(lang) {
+            // No cambiar el contenido existente, solo preparar para nuevos mensajes
         }
         
         // Configurar altura de terminal al cargar
